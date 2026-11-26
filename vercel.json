@@ -3,11 +3,11 @@
   "rewrites": [
     {
       "source": "/meta-products.xml",
-      "destination": "/api/meta-products.xml"
+      "destination": "/api/seo-feed?feed=meta-products"
     },
     {
       "source": "/sitemap.xml",
-      "destination": "/api/sitemap.xml"
+      "destination": "/api/seo-feed?feed=sitemap"
     },
     {
       "source": "/api/(.*)",

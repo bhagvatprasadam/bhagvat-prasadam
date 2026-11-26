@@ -72,8 +72,8 @@ export default function BestSellerSection() {
         const shortName = rawTitle.includes('–')
           ? rawTitle.split('–')[0].trim()
           : rawTitle.includes('-')
-          ? rawTitle.split('-')[0].trim()
-          : rawTitle;
+            ? rawTitle.split('-')[0].trim()
+            : rawTitle;
 
         return {
           id: p.id,
@@ -122,7 +122,7 @@ export default function BestSellerSection() {
               fallbackText={displayName}
             />
           </div>
-          <p 
+          <p
             className="mt-3.5 sm:mt-4 font-bold text-xs sm:text-sm text-stone-800 group-hover:text-brand-maroon transition-colors line-clamp-2 max-w-[130px] mx-auto"
             title={item.name || item.title}
           >

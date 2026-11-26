@@ -13,20 +13,28 @@ export default async function handler(req, res) {
     return;
   }
 
-  const apiBaseUrl = (process.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
-  const adminToken = process.env.SHOPIFY_ADMIN_TOKEN;
-  if (!apiBaseUrl || !adminToken) {
-    res.status(500).send('VITE_API_BASE_URL and SHOPIFY_ADMIN_TOKEN must be configured.');
+  const apiBaseUrl = (process.env.VITE_API_BASE_URL || 'https://megaecomm.megascale.co.in/backend/api/shop').replace(/\/+$/, '');
+  const token = (
+    process.env.SHOPFRONT_TOKEN ||
+    process.env.VITE_SHOPFRONT_TOKEN ||
+    process.env.VITE_API_SHOPFRONT_TOKEN ||
+    process.env.SHOPIFY_ADMIN_TOKEN ||
+    ''
+  ).trim();
+
+  if (!token) {
+    res.status(500).send('Storefront token is not configured.');
     return;
   }
 
   try {
     const target = new URL(`${apiBaseUrl}/${feed}.xml`);
-    target.searchParams.set('token', adminToken);
+    target.searchParams.set('token', token);
+
     const response = await fetch(target);
     res.status(response.status);
-    res.setHeader('Content-Type', response.headers.get('content-type') || 'application/xml');
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Content-Type', response.headers.get('content-type') || 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
     res.send(Buffer.from(await response.arrayBuffer()));
   } catch (error) {
     console.error(`Failed to fetch ${feed} feed:`, error);
